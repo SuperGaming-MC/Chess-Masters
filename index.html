@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Masters by SG</title>
+    <style>
+        /* General styling */
+        * {
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Georgia', serif;
+            background-image: url('https://img.freepik.com/free-photo/wooden-floor-background_53876-88628.jpg?semt=ais_country_boost&w=740');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            color: #f5f5dc;
+            line-height: 1.6;
+        }
+
+        .page-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        section {
+            margin: 80px 0;
+            padding: 40px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
+        }
+
+        h1, h2, h3 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        /* Navigation Bar */
+        .nav-bar {
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-bar a {
+            color: #f5f5dc;
+            text-decoration: none;
+            margin: 0 15px;
+            font-size: 18px;
+            transition: all 0.3s ease;
+            padding: 5px 15px;
+            border-radius: 5px;
+        }
+
+        .nav-bar a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-3px);
+        }
+
+        /* Header / Welcome Section */
+        .welcome-section {
+            margin-top: 100px;
+            text-align: center;
+            padding-top: 60px;
+            padding-bottom: 60px;
+        }
+
+        .game-title {
+            font-size: 48px;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        .title-underline {
+            height: 3px;
+            width: 200px;
+            background: linear-gradient(to right, transparent, #f5f5dc, transparent);
+            margin: 0 auto 40px;
+        }
+
+        .chess-images {
+            display: flex;
+            justify-content: space-around;
+            flex-wrap: wrap;
+            margin: 40px 0;
+        }
+
+        .chess-image {
+            margin: 10px;
+            border: 3px solid #8b5a2b;
+            border-radius: 8px;
+            overflow: hidden;
+            width: 120px;
+            height: 120px;
+            background-color: #d7c3a1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px;
+            transition: all 0.3s ease;
+        }
+
+        .chess-image:hover {
+            transform: translateY(-10px) rotate(10deg);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .play-btn {
+            padding: 15px 30px;
+            font-size: 20px;
+            margin-top: 30px;
+            background-color: #8b5a2b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            background-image: linear-gradient(to bottom, #a67c52, #8b5a2b);
+            border: 2px solid #6d4c41;
+        }
+
+        .play-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            background-image: linear-gradient(to bottom, #b58863, #9a7b4f);
+        }
+
+        /* How to Play Section */
+        .how-to-play {
+            padding: 40px;
+        }
+
+        .instruction-item {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1s;
+        }
+
+        .instruction-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .instruction-card {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .instruction-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        .piece-explanation {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .piece-icon {
+            font-size: 40px;
+            margin-right: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+        }
+
+        /* About Section */
+        .about-section {
+            padding: 40px;
+        }
+
+        .about-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .about-card {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .about-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.7);
+            margin-top: 40px;
+        }
+
+        .credits {
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+            40% { transform: translateY(-10px); }
+            60% { transform: translateY(-5px); }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .about-content, .instruction-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <a href="#welcome">Home</a>
+        <a href="game.html" id="play-nav">Play Game</a>
+        <a href="#how-to-play">How to Play</a>
+        <a href="#about">About</a>
+    </nav>
+
+    <div class="page-container">
+        <!-- Welcome Section -->
+        <section id="welcome" class="welcome-section">
+            <h1 class="game-title">Chess Masters</h1>
+            <div class="title-underline"></div>
+            
+            <p>Welcome to Chess Masters, a classic chess game with beautiful wooden styling.</p>
+            
+            <div class="chess-images">
+                <div class="chess-image">♞</div>
+                <div class="chess-image">♜</div>
+                <div class="chess-image">♚</div>
+                <div class="chess-image">♕</div>
+                <div class="chess-image">♙</div>
+            </div>
+            
+            <a href="game.html"><button class="play-btn">Play Now</button></a>
+        </section>
+
+        <!-- How to Play Section -->
+        <section id="how-to-play" class="how-to-play">
+            <h2>How to Play Chess</h2>
+            <div class="title-underline"></div>
+            
+            <div class="instruction-item">
+                <h3>Basic Rules</h3>
+                <p>Chess is played on an 8×8 grid with alternating dark and light squares. Each player begins with 16 pieces: one king, one queen, two rooks, two knights, two bishops, and eight pawns. The goal is to checkmate your opponent's king.</p>
+            </div>
+            
+            <div class="instruction-item">
+                <h3>Playing the Game</h3>
+                <ol>
+                    <li>White always moves first, and players take turns moving one piece at a time.</li>
+                    <li>To move a piece, click on it first and then click on its destination square.</li>
+                    <li>When you click on a piece, valid moves will be highlighted with green dots.</li>
+                    <li>If you're stuck, you can use the Hint button to get a suggested move.</li>
+                </ol>
+            </div>
+            
+            <h3>How the Pieces Move</h3>
+            <div class="instruction-grid">
+                <div class="instruction-card">
+                    <div class="piece-explanation">
+                        <div class="piece-icon">♟</div>
+                        <strong>Pawn</strong>
+                    </div>
+                    <p>Moves forward one square, but captures diagonally. On its first move, a pawn can move two squares forward. Pawns promote to another piece when they reach the opposite end of the board.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <div class="piece-explanation">
+                        <div class="piece-icon">♜</div>
+                        <strong>Rook</strong>
+                    </div>
+                    <p>Moves any number of squares horizontally or vertically.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <div class="piece-explanation">
+                        <div class="piece-icon">♞</div>
+                        <strong>Knight</strong>
+                    </div>
+                    <p>Moves in an L-shape: two squares horizontally or vertically and then one square perpendicular to that direction. Knights can jump over other pieces.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <div class="piece-explanation">
+                        <div class="piece-icon">♝</div>
+                        <strong>Bishop</strong>
+                    </div>
+                    <p>Moves any number of squares diagonally.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <div class="piece-explanation">
+                        <div class="piece-icon">♛</div>
+                        <strong>Queen</strong>
+                    </div>
+                    <p>Combines the powers of the rook and bishop, moving any number of squares horizontally, vertically, or diagonally.</p>
+                </div>
+                
+                <div class="instruction-card">
+                    <div class="piece-explanation">
+                        <div class="piece-icon">♚</div>
+                        <strong>King</strong>
+                    </div>
+                    <p>Moves one square in any direction (horizontally, vertically, or diagonally). The king must be protected at all times from check.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="about-section">
+            <h2>About Chess Masters</h2>
+            <div class="title-underline"></div>
+            
+            <div class="about-content">
+                <div class="about-card">
+                    <h3>Game History</h3>
+                    <p>Chess is one of the oldest and most popular board games in the world. It originated in northern India in the 6th century AD and spread to Persia. When the Arabs conquered Persia, chess was taken up by the Muslim world and subsequently spread to Southern Europe.</p>
+                </div>
+                
+                <div class="about-card">
+                    <h3>Chess Masters Features</h3>
+                    <ul>
+                        <li>Complete chess rules implementation</li>
+                        <li>Move validation and highlighting</li>
+                        <li>Captured pieces tracking</li>
+                        <li>Check and checkmate detection</li>
+                        <li>Game hint system</li>
+                        <li>Undo move functionality</li>
+                        <li>Beautiful wooden-themed design</li>
+                    </ul>
+                </div>
+                
+                <div class="about-card">
+                    <h3>Development</h3>
+                    <p>Chess Masters was developed using HTML, CSS, and JavaScript. The game features a responsive design that works on both desktop and mobile devices. Special attention was paid to the animations and visual feedback to create an engaging user experience.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p class="credits">Made by SG</p>
+            <p>&copy; 2025 Chess Masters. All rights reserved.</p>
+        </footer>
+    </div>
+</body>
+</html>
