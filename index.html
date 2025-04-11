@@ -21,17 +21,21 @@
             background-attachment: fixed;
             color: #f5f5dc;
             line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
 
         .page-container {
             max-width: 1200px;
             margin: 0 auto;
-            padding: 20px;
+            padding: 10px;
+            flex: 1;
         }
 
         section {
-            margin: 80px 0;
-            padding: 40px;
+            margin: 60px 0;
+            padding: 20px;
             background-color: rgba(0, 0, 0, 0.7);
             border-radius: 15px;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.8);
@@ -39,28 +43,37 @@
 
         h1, h2, h3 {
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+            margin: 0.5em 0;
         }
 
         /* Navigation Bar */
         .nav-bar {
             width: 100%;
             background-color: rgba(0, 0, 0, 0.8);
-            display: flex;
-            justify-content: center;
-            padding: 15px 0;
+            padding: 10px 0;
             position: fixed;
             top: 0;
             z-index: 100;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            justify-content: center;
+            flex: 1;
         }
 
         .nav-bar a {
             color: #f5f5dc;
             text-decoration: none;
-            margin: 0 15px;
-            font-size: 18px;
+            margin: 0 10px;
+            font-size: 16px;
             transition: all 0.3s ease;
-            padding: 5px 15px;
+            padding: 8px 12px;
             border-radius: 5px;
+            display: block;
         }
 
         .nav-bar a:hover {
@@ -68,46 +81,56 @@
             transform: translateY(-3px);
         }
 
+        .hamburger {
+            display: none;
+            font-size: 24px;
+            background: none;
+            border: none;
+            color: #f5f5dc;
+            cursor: pointer;
+            padding: 10px;
+        }
+
         /* Header / Welcome Section */
         .welcome-section {
-            margin-top: 100px;
+            margin-top: 80px;
             text-align: center;
-            padding-top: 60px;
-            padding-bottom: 60px;
+            padding: 40px 20px;
         }
 
         .game-title {
-            font-size: 48px;
-            margin-bottom: 20px;
+            font-size: 36px;
+            margin-bottom: 15px;
             animation: pulse 2s infinite;
         }
 
         .title-underline {
             height: 3px;
-            width: 200px;
+            width: 150px;
             background: linear-gradient(to right, transparent, #f5f5dc, transparent);
-            margin: 0 auto 40px;
+            margin: 0 auto 20px;
         }
 
         .chess-images {
             display: flex;
             justify-content: space-around;
             flex-wrap: wrap;
-            margin: 40px 0;
+            margin: 20px 0;
+            gap: 10px;
         }
 
         .chess-image {
-            margin: 10px;
+            margin: 5px;
             border: 3px solid #8b5a2b;
             border-radius: 8px;
             overflow: hidden;
-            width: 120px;
-            height: 120px;
+            width: 100px;
+            height: 100px;
             background-color: #d7c3a1;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 60px;
+            font-size: 50px;
             transition: all 0.3s ease;
         }
 
@@ -117,9 +140,9 @@
         }
 
         .play-btn {
-            padding: 15px 30px;
-            font-size: 20px;
-            margin-top: 30px;
+            padding: 12px 24px;
+            font-size: 18px;
+            margin-top: 20px;
             background-color: #8b5a2b;
             color: white;
             border: none;
@@ -129,6 +152,7 @@
             transition: all 0.3s ease;
             background-image: linear-gradient(to bottom, #a67c52, #8b5a2b);
             border: 2px solid #6d4c41;
+            min-width: 120px;
         }
 
         .play-btn:hover {
@@ -139,27 +163,27 @@
 
         /* How to Play Section */
         .how-to-play {
-            padding: 40px;
+            padding: 20px;
         }
 
         .instruction-item {
-            margin-bottom: 30px;
-            padding-bottom: 20px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
             border-bottom: 1px solid rgba(255, 255, 255, 0.2);
             animation: fadeIn 1s;
         }
 
         .instruction-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
         }
 
         .instruction-card {
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
-            padding: 20px;
+            padding: 15px;
             transition: all 0.3s ease;
         }
 
@@ -171,34 +195,34 @@
         .piece-explanation {
             display: flex;
             align-items: center;
-            margin-bottom: 15px;
+            margin-bottom: 10px;
         }
 
         .piece-icon {
-            font-size: 40px;
-            margin-right: 15px;
+            font-size: 32px;
+            margin-right: 10px;
             display: flex;
             align-items: center;
             justify-content: center;
-            width: 50px;
+            width: 40px;
         }
 
         /* About Section */
         .about-section {
-            padding: 40px;
+            padding: 20px;
         }
 
         .about-content {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-            margin-top: 30px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
         }
 
         .about-card {
             background-color: rgba(0, 0, 0, 0.5);
             border-radius: 10px;
-            padding: 20px;
+            padding: 15px;
             transition: all 0.3s ease;
         }
 
@@ -210,14 +234,14 @@
         /* Footer */
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 15px;
             background-color: rgba(0, 0, 0, 0.7);
-            margin-top: 40px;
+            margin-top: 20px;
         }
 
         .credits {
-            font-size: 18px;
-            margin-bottom: 10px;
+            font-size: 16px;
+            margin-bottom: 5px;
         }
 
         /* Animations */
@@ -238,10 +262,121 @@
             60% { transform: translateY(-5px); }
         }
 
-        /* Responsive adjustments */
+        /* Mobile Optimizations */
         @media (max-width: 768px) {
-            .about-content, .instruction-grid {
+            .nav-bar {
+                padding: 5px 0;
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hamburger {
+                display: block;
+                position: absolute;
+                right: 10px;
+                top: 5px;
+            }
+
+            .nav-links {
+                display: none;
+                flex-direction: column;
+                width: 100%;
+                text-align: center;
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .nav-bar a {
+                margin: 5px 0;
+                font-size: 14px;
+                padding: 6px 10px;
+            }
+
+            .page-container {
+                padding: 5px;
+            }
+
+            section {
+                margin: 40px 0;
+                padding: 15px;
+            }
+
+            .welcome-section {
+                margin-top: 60px;
+                padding: 20px 10px;
+            }
+
+            .game-title {
+                font-size: 28px;
+            }
+
+            .title-underline {
+                width: 100px;
+            }
+
+            .chess-image {
+                width: 80px;
+                height: 80px;
+                font-size: 40px;
+            }
+
+            .play-btn {
+                padding: 10px 20px;
+                font-size: 16px;
+                min-width: 100px;
+            }
+
+            .instruction-grid, .about-content {
                 grid-template-columns: 1fr;
+            }
+
+            .piece-icon {
+                font-size: 28px;
+                width: 36px;
+            }
+
+            h2 {
+                font-size: 1.2em;
+            }
+
+            h3 {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .game-title {
+                font-size: 24px;
+            }
+
+            .title-underline {
+                width: 80px;
+            }
+
+            .chess-image {
+                width: 60px;
+                height: 60px;
+                font-size: 30px;
+            }
+
+            .play-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+            }
+
+            .piece-icon {
+                font-size: 24px;
+                width: 32px;
+            }
+
+            .instruction-grid, .about-content {
+                gap: 10px;
+            }
+
+            .credits {
+                font-size: 14px;
             }
         }
     </style>
@@ -249,10 +384,13 @@
 <body>
     <!-- Navigation Bar -->
     <nav class="nav-bar">
-        <a href="#welcome">Home</a>
-        <a href="game.html" id="play-nav">Play Game</a>
-        <a href="#how-to-play">How to Play</a>
-        <a href="#about">About</a>
+        <button class="hamburger">☰</button>
+        <div class="nav-links">
+            <a href="#welcome">Home</a>
+            <a href="game.html" id="play-nav">Play Game</a>
+            <a href="#how-to-play">How to Play</a>
+            <a href="#about">About</a>
+        </div>
     </nav>
 
     <div class="page-container">
@@ -288,8 +426,8 @@
                 <h3>Playing the Game</h3>
                 <ol>
                     <li>White always moves first, and players take turns moving one piece at a time.</li>
-                    <li>To move a piece, click on it first and then click on its destination square.</li>
-                    <li>When you click on a piece, valid moves will be highlighted with green dots.</li>
+                    <li>To move a piece, click or tap on it first and then click or tap on its destination square.</li>
+                    <li>When you select a piece, valid moves will be highlighted with green dots.</li>
                     <li>If you're stuck, you can use the Hint button to get a suggested move.</li>
                 </ol>
             </div>
@@ -383,5 +521,23 @@
             <p>&copy; 2025 Chess Masters. All rights reserved.</p>
         </footer>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+
+            hamburger.addEventListener('click', () => {
+                navLinks.classList.toggle('active');
+            });
+
+            // Close menu when a link is clicked
+            navLinks.querySelectorAll('a').forEach(link => {
+                link.addEventListener('click', () => {
+                    navLinks.classList.remove('active');
+                });
+            });
+        });
+    </script>
 </body>
 </html>
