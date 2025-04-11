@@ -24,6 +24,7 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            overflow: hidden; /* Prevent scrolling during victory screen */
         }
 
         .page-container {
@@ -166,6 +167,11 @@
 
         .highlight {
             background-color: rgba(255, 255, 0, 0.4);
+        }
+
+        .check-highlight {
+            border: 3px solid red;
+            box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
         }
 
         .possible-move {
@@ -323,6 +329,77 @@
             padding: 15px;
         }
 
+        /* Victory Screen */
+        .victory-screen {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            z-index: 200;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            animation: fadeIn 1s;
+        }
+
+        .victory-screen.active {
+            display: flex;
+        }
+
+        .victory-text {
+            font-size: 48px;
+            color: #f5f5dc;
+            text-shadow: 2px 2px 10px rgba(255, 215, 0, 0.8);
+            animation: pulse 1.5s infinite;
+            margin-bottom: 30px;
+        }
+
+        .victory-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .victory-btn {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #8b5a2b;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            background-image: linear-gradient(to bottom, #a67c52, #8b5a2b);
+            border: 2px solid #6d4c41;
+            min-width: 150px;
+        }
+
+        .victory-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4);
+            background-image: linear-gradient(to bottom, #b58863, #9a7b4f);
+        }
+
+        .firework {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background-color: #ff0;
+            border-radius: 50%;
+            animation: firework 1.5s infinite;
+        }
+
+        @keyframes firework {
+            0% { transform: scale(0); opacity: 1; }
+            50% { transform: scale(2); opacity: 0.7; }
+            100% { transform: scale(0); opacity: 0; }
+        }
+
         /* Animations */
         @keyframes fadeIn {
             from { opacity: 0; }
@@ -447,6 +524,16 @@
                 width: 100%;
                 max-width: 300px;
             }
+
+            .victory-text {
+                font-size: 32px;
+            }
+
+            .victory-btn {
+                padding: 10px 20px;
+                font-size: 16px;
+                min-width: 120px;
+            }
         }
 
         @media (max-width: 480px) {
@@ -484,6 +571,16 @@
             .game-placeholder {
                 font-size: 16px;
             }
+
+            .victory-text {
+                font-size: 24px;
+            }
+
+            .victory-btn {
+                padding: 8px 16px;
+                font-size: 14px;
+                min-width: 100px;
+            }
         }
     </style>
 </head>
@@ -510,6 +607,15 @@
         </section>
     </div>
 
+    <!-- Victory Screen -->
+    <div id="victory-screen" class="victory-screen">
+        <div class="victory-text" id="victory-text"></div>
+        <div class="victory-buttons">
+            <button class="victory-btn" id="play-again-btn">Play Again</button>
+            <button class="victory-btn" id="home-btn">Go to Home Page</button>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // Hamburger menu toggle
@@ -533,6 +639,10 @@
             // Game elements
             const gameContent = document.getElementById('game-content');
             const startGameButton = document.getElementById('start-game-btn');
+            const victoryScreen = document.getElementById('victory-screen');
+            const victoryText = document.getElementById('victory-text');
+            const playAgainButton = document.getElementById('play-again-btn');
+            const homeButton = document.getElementById('home-btn');
 
             // Game state
             let selectedPiece = null;
@@ -646,6 +756,33 @@
                         const square = getSquareElement(hintSquare.row, hintSquare.col);
                         if (square) square.classList.add('hint-highlight');
                     }
+
+                    highlightKingInCheck();
+                }
+
+                function highlightKingInCheck() {
+                    const inCheck = isInCheck(currentPlayer);
+                    if (inCheck) {
+                        const kingPos = findKing(currentPlayer);
+                        const kingSquare = getSquareElement(kingPos.row, kingPos.col);
+                        const moves = [
+                            [-1, -1], [-1, 0], [-1, 1],
+                            [0, -1], [0, 1],
+                            [1, -1], [1, 0], [1, 1]
+                        ];
+                        moves.forEach(([dr, dc]) => {
+                            const r = kingPos.row + dr;
+                            const c = kingPos.col + dc;
+                            if (r >= 0 && r < 8 && c >= 0 && c < 8) {
+                                const square = getSquareElement(r, c);
+                                square.classList.add('check-highlight');
+                            }
+                        });
+                    } else {
+                        document.querySelectorAll('.check-highlight').forEach(square => {
+                            square.classList.remove('check-highlight');
+                        });
+                    }
                 }
 
                 function getTouchPosition(event) {
@@ -709,7 +846,8 @@
                     const square = event.target.classList.contains('square') ? event.target : event.target.parentElement;
                     const row = parseInt(square.dataset.row);
                     const col = parseInt(square.dataset.col);
-                    
+                    const inCheck = isInCheck(currentPlayer);
+
                     if (selectedPiece) {
                         const fromRow = parseInt(selectedPiece.parentElement.dataset.row);
                         const fromCol = parseInt(selectedPiece.parentElement.dataset.col);
@@ -720,14 +858,19 @@
                         if (isValidMove) {
                             await movePiece(fromRow, fromCol, row, col);
                         } else {
+                            clearSelection();
                             selectPiece(square, row, col);
                         }
                     } else {
+                        if (inCheck && !boardState[row][col]?.includes('king')) return; // Only allow king moves in check
                         selectPiece(square, row, col);
                     }
                 }
 
                 async function movePiece(fromRow, fromCol, toRow, toCol) {
+                    const targetPiece = boardState[toRow][toCol];
+                    if (targetPiece && targetPiece.includes('king')) return; // Prevent capturing the king
+
                     animationInProgress = true;
                     
                     const pieceToMove = selectedPiece.cloneNode(true);
@@ -807,6 +950,7 @@
                 }
 
                 function selectPiece(square, row, col) {
+                    clearSelection(); // Clear previous selection first
                     const piece = square.querySelector('.piece');
                     if (piece && piece.dataset.piece.startsWith(currentPlayer)) {
                         selectedPiece = piece;
@@ -818,8 +962,6 @@
                             moveIndicator.classList.add('possible-move');
                             targetSquare.appendChild(moveIndicator);
                         });
-                    } else {
-                        clearSelection();
                     }
                 }
 
@@ -840,6 +982,7 @@
                     if (!piece) return [];
                     
                     const [color, type] = piece.split('-');
+                    const inCheck = isInCheck(currentPlayer);
                     const validMoves = [];
                     
                     function wouldBeInCheck(fromRow, fromCol, toRow, toCol) {
@@ -847,16 +990,16 @@
                         const movingPiece = boardState[fromRow][fromCol];
                         boardState[toRow][toCol] = movingPiece;
                         boardState[fromRow][fromCol] = null;
-                        const inCheck = isInCheck(color);
+                        const inCheckAfterMove = isInCheck(color);
                         boardState[fromRow][fromCol] = movingPiece;
                         boardState[toRow][toCol] = originalPiece;
-                        return inCheck;
+                        return inCheckAfterMove;
                     }
                     
                     function canMoveTo(r, c) {
                         if (r < 0 || r > 7 || c < 0 || c > 7) return false;
                         const targetPiece = boardState[r][c];
-                        return !targetPiece || !targetPiece.startsWith(color);
+                        return (!targetPiece || !targetPiece.startsWith(color)) && !targetPiece?.includes('king');
                     }
                     
                     function isEmpty(r, c) {
@@ -867,8 +1010,10 @@
                     function hasEnemy(r, c) {
                         if (r < 0 || r > 7 || c < 0 || c > 7) return false;
                         const targetPiece = boardState[r][c];
-                        return targetPiece && !targetPiece.startsWith(color);
+                        return targetPiece && !targetPiece.startsWith(color) && !targetPiece.includes('king');
                     }
+
+                    if (inCheck && type !== 'king') return []; // Only king can move in check
 
                     if (type === 'pawn') {
                         const direction = color === 'white' ? -1 : 1;
@@ -1052,7 +1197,7 @@
 
                 function isInCheck(color) {
                     const king = findKing(color);
-                    return isSquareAttacked(king.row, king.col, color === 'white' ? 'black' : 'white');
+                    return king && isSquareAttacked(king.row, king.col, color === 'white' ? 'black' : 'white');
                 }
 
                 function hasLegalMoves(color) {
@@ -1072,18 +1217,33 @@
 
                 function checkGameStatus() {
                     const inCheck = isInCheck(currentPlayer);
-                    const hasMovesAvailable = hasLegalMoves(currentPlayer);
-                    if (inCheck && !hasMovesAvailable) {
+                    const hasMoves = hasLegalMoves(currentPlayer);
+                    if (inCheck && !hasMoves) {
                         gameOver = true;
                         const winner = currentPlayer === 'white' ? 'Black' : 'White';
-                        statusElement.textContent = `Checkmate! ${winner} wins!`;
+                        showVictoryScreen(winner);
                     } else if (inCheck) {
                         statusElement.textContent = `${currentPlayer.charAt(0).toUpperCase() + currentPlayer.slice(1)} is in check!`;
-                    } else if (!hasMovesAvailable) {
+                    } else if (!hasMoves) {
                         gameOver = true;
                         statusElement.textContent = 'Stalemate! The game is a draw.';
                     } else {
                         statusElement.textContent = '';
+                    }
+                }
+
+                function showVictoryScreen(winner) {
+                    victoryText.textContent = `${winner} Wins!`;
+                    victoryScreen.classList.add('active');
+                    for (let i = 0; i < 10; i++) {
+                        const firework = document.createElement('div');
+                        firework.classList.add('firework');
+                        firework.style.left = `${Math.random() * 100}vw`;
+                        firework.style.top = `${Math.random() * 100}vh`;
+                        firework.style.backgroundColor = `hsl(${Math.random() * 360}, 100%, 50%)`;
+                        firework.style.animationDelay = `${Math.random() * 1}s`;
+                        victoryScreen.appendChild(firework);
+                        setTimeout(() => firework.remove(), 1500);
                     }
                 }
 
@@ -1115,6 +1275,7 @@
                     turnStatusElement.previousElementSibling.textContent = '♟';
                     updateCapturedPieces();
                     createBoard();
+                    victoryScreen.classList.remove('active');
                 }
 
                 function showHint() {
@@ -1154,11 +1315,14 @@
                     gameOver = false;
                     statusElement.textContent = '';
                     createBoard();
+                    victoryScreen.classList.remove('active');
                 }
 
                 resetButton.addEventListener('click', resetGame);
                 hintButton.addEventListener('click', showHint);
                 undoButton.addEventListener('click', undoMove);
+                playAgainButton.addEventListener('click', resetGame);
+                homeButton.addEventListener('click', () => window.location.href = 'index.html');
 
                 createBoard();
             }
