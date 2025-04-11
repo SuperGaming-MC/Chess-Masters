@@ -23,8 +23,10 @@
             line-height: 1.6;
             display: flex;
             flex-direction: column;
-            min-height: 100vh;
-            overflow: hidden; /* Prevent scrolling during victory screen */
+        }
+
+        body.no-scroll {
+            overflow: hidden;
         }
 
         .page-container {
@@ -35,6 +37,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            min-height: 100vh;
         }
 
         section {
@@ -678,7 +681,7 @@
                 [null, null, null, null, null, null, null, null],
                 [null, null, null, null, null, null, null, null],
                 [null, null, null, null, null, null, null, null],
-                [null, null, null, null, null, null, null, null],
+                [null, null, null, null, null, during gameplay null, null],
                 ['white-pawn', 'white-pawn', 'white-pawn', 'white-pawn', 'white-pawn', 'white-pawn', 'white-pawn', 'white-pawn'],
                 ['white-rook', 'white-knight', 'white-bishop', 'white-queen', 'white-king', 'white-bishop', 'white-knight', 'white-rook']
             ];
@@ -1235,6 +1238,7 @@
                 function showVictoryScreen(winner) {
                     victoryText.textContent = `${winner} Wins!`;
                     victoryScreen.classList.add('active');
+                    document.body.classList.add('no-scroll');
                     for (let i = 0; i < 10; i++) {
                         const firework = document.createElement('div');
                         firework.classList.add('firework');
@@ -1276,6 +1280,7 @@
                     updateCapturedPieces();
                     createBoard();
                     victoryScreen.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
                 }
 
                 function showHint() {
@@ -1316,13 +1321,17 @@
                     statusElement.textContent = '';
                     createBoard();
                     victoryScreen.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
                 }
 
                 resetButton.addEventListener('click', resetGame);
                 hintButton.addEventListener('click', showHint);
                 undoButton.addEventListener('click', undoMove);
                 playAgainButton.addEventListener('click', resetGame);
-                homeButton.addEventListener('click', () => window.location.href = 'index.html');
+                homeButton.addEventListener('click', () => {
+                    document.body.classList.remove('no-scroll');
+                    window.location.href = 'index.html';
+                });
 
                 createBoard();
             }
