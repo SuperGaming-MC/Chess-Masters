@@ -254,6 +254,8 @@
             background-image: linear-gradient(to bottom, #a67c52, #8b5a2b);
             border: 2px solid #6d4c41;
             min-width: 120px;
+            z-index: 10; /* Ensure button is above other elements */
+            position: relative;
         }
 
         .start-btn:hover {
@@ -647,6 +649,9 @@
             const playAgainButton = document.getElementById('play-again-btn');
             const homeButton = document.getElementById('home-btn');
 
+            // Debugging: Verify button exists
+            console.log('Start Game Button:', startGameButton);
+
             // Game state
             let selectedPiece = null;
             let currentPlayer = 'white';
@@ -681,7 +686,7 @@
                 [null, null, null, null, null, null, null, null],
                 [null, null, null, null, null, null, null, null],
                 [null, null, null, null, null, null, null, null],
-                [null, null, null, null, null, during gameplay null, null],
+                [null, null, null, null, null, null, null, null],
                 ['white-pawn', 'white-pawn', 'white-pawn', 'white-pawn', 'white-pawn', 'white-pawn', 'white-pawn', 'white-pawn'],
                 ['white-rook', 'white-knight', 'white-bishop', 'white-queen', 'white-king', 'white-bishop', 'white-knight', 'white-rook']
             ];
@@ -690,8 +695,13 @@
 
             // Function to start the game
             function startGame() {
-                if (gameStarted) return;
+                console.log('startGame function called');
+                if (gameStarted) {
+                    console.log('Game already started, exiting startGame');
+                    return;
+                }
                 gameStarted = true;
+                console.log('Game starting...');
 
                 gameContent.innerHTML = `
                     <div class="game-info">
@@ -1336,7 +1346,15 @@
                 createBoard();
             }
 
-            startGameButton.addEventListener('click', startGame);
+            // Attach event listener with debugging
+            if (startGameButton) {
+                startGameButton.addEventListener('click', () => {
+                    console.log('Start Game button clicked');
+                    startGame();
+                });
+            } else {
+                console.error('Start Game button not found in the DOM');
+            }
         });
     </script>
 </body>
